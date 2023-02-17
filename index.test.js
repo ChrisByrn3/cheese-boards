@@ -59,4 +59,44 @@ const chrisBoards = await user.getBoards();
     expect(chrisBoards[1].UserId).toBe(user.id);
 expect(chrisBoards[0].type).toBe('French')}
 )
-})
+
+test('can add cheeses to board', async () =>{
+    const cheese1 = await Cheese.create({
+        title: 'Brie', description: 'A creamy cheese full of flavour'
+    })
+    const cheese2 = await Cheese.create({
+        title: 'Spicy Cheddar', description: 'A warming cheddar'
+    })
+    const board = await Board.create({
+        type: 'Mix it up', description: 'A board of our fave cheeses', rating: 5
+    })
+    await board.addCheese(cheese1);
+    await board.addCheese(cheese2);
+const selection = await board.getCheeses(); 
+    expect(selection.length).toBe(2);
+    expect(selection[1].BoardId).toBe(board.Id);
+expect(selection[0].title).toBe('Brie');
+}
+)
+
+test('can add boards to cheese', async () =>{
+    const cheese = await Cheese.create({
+        title: 'Brie', description: 'A creamy cheese full of flavour'
+    })
+    const board1 = await Board.create({
+        type: 'Mix it up', description: 'A board of our fave cheeses', rating: 5
+    })
+    const board2 = await Board.create({
+        type: 'French', description: 'A selection of fine French cheeses', rating: 4
+    })
+    await cheese.addBoard(board1);
+    await cheese.addBoard(board2);
+const boardList = await cheese.getBoards(); 
+    expect(boardList.length).toBe(2);
+    expect(boardList[1].CheeseId).toBe(cheese.Id);
+expect(boardList[0].type).toBe('Mix it up');
+}
+)
+
+}
+)
