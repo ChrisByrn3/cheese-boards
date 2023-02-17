@@ -38,3 +38,25 @@ describe('User, Board & Cheese Models', () => {
         expect(cheese1.description).toBe('A creamy cheese full of flavour');
     })
 })
+
+
+describe('Association Tests', () => {
+
+test('can add boards to user', async () => {
+    const board1 = await Board.create({
+        type: 'French', description: 'A selection of the finest french cheeses', rating: 4
+    })
+    const board2 = await Board.create({
+        type: 'Spicy', description: 'A board containing some of the worlds best nice n spicy cheeses', rating: 5
+    })
+    const user = await User.create({
+        name: 'Chris', email: 'chris@email.com'
+    })
+    await user.addBoard(board1);
+    await user.addBoard(board2);
+const chrisBoards = await user.getBoards(); 
+    expect(chrisBoards.length).toBe(2);
+    expect(chrisBoards[1].UserId).toBe(user.id);
+expect(chrisBoards[0].type).toBe('French')}
+)
+})
